@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">RideHailing</string>
+    <string name="map">Map</string>
+    <string name="history">History</string>
+    <string name="ride_history">Ride History</string>
+    <string name="request_ride">Request Ride</string>
+    <string name="pickup_location">Pickup Location</string>
+    <string name="destination_location">Destination Location</string>
+    <string name="set_pickup">Set Pickup</string>
+    <string name="set_destination">Set Destination</string>
+    <string name="get_fare_estimate">Get Fare Estimate</string>
+    <string name="fare_estimate">Fare Estimate</string>
+    <string name="base_fare">Base Fare</string>
+    <string name="distance_fare">Distance Fare</string>
+    <string name="surge_pricing">Surge Pricing</string>
+    <string name="total_fare">Total Fare</string>
+    <string name="confirm_ride">Confirm Ride</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_rides_found">No rides found</string>
+    <string name="repeat_ride">Repeat Ride</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="ok">OK</string>
+</resources>
