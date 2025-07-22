@@ -1,10 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-   // alias(libs.plugins.kotlin.kapt)
-   // alias(libs.plugins.dagger.hilt)
-   // alias(libs.plugins.navigation.safeargs)
-  //  alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
+    //alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -20,8 +20,13 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Add your Google Maps API key here
-        manifestPlaceholders["MAPS_API_KEY"] = "your_google_maps_api_key"
+
+        val mapsApiKey = project.findProperty("MAPS_API_KEY") as String?
+            ?: ""
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
+
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
+
     }
 
     buildTypes {
@@ -44,6 +49,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 
     testOptions {
@@ -51,6 +57,7 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
 }
 
 dependencies {
@@ -83,6 +90,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
     implementation(libs.places)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
@@ -90,6 +98,7 @@ dependencies {
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
@@ -99,3 +108,5 @@ dependencies {
     androidTestImplementation(libs.dagger.hilt.android.testing)
   //  kaptAndroidTest(libs.dagger.hilt.compiler)
 }
+
+

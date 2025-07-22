@@ -22,4 +22,26 @@
     <string name="error">Error</string>
     <string name="retry">Retry</string>
     <string name="ok">OK</string>
+    <string name="destination">Destination</string>
+    <string name="title_home">Home</string>
+    <string name="title_history">History</string>
+    <string name="fare_estimate_title">Fare Estimate</string>
+    <string name="demand_multiplier">Demand Multiplier:</string>
+    <string name="traffic_multiplier">Traffic Multiplier:</string>
+    <string name="distance">Distance:</string>
+    <string name="estimated_duration">Estimated Duration:</string>
+    <string name="ride_status">Status:</string>
+    <string name="ride_date">Date:</string>
+    <string name="driver_name">Driver:</string>
+    <string name="error_location_permission">Location permission is required</string>
+    <string name="error_network">Network error. Please try again.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_invalid_location">Please select valid locations</string>
+    <string name="ride_requested_success">Ride requested successfully!</string>
+    <string name="currency_format">$%.2f</string>
+    <string name="distance_format">%.1f km</string>
+    <string name="duration_format">%d min</string>
+    <string name="multiplier_format">%.1fx</string>
 </resources>
+
+
