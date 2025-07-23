@@ -18,8 +18,5 @@ Mocked Backend: Simulated API responses for realistic testing
 Navigation: Jetpack Navigation with bottom navigation
 Coroutines: Asynchronous operations and background tasks
 
-Testing Coverage
 
-Unit Tests: Use cases, ViewModels, utilities
-Instrumented Tests: Database operations and UI interactions
-Test Scenarios: All required test cases from assessment document
+
