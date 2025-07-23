@@ -16,7 +16,7 @@ import com.example.ridehailing.utils.gone
 import com.example.ridehailing.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+
 class RideHistoryFragment : Fragment() {
 
     private var _binding: FragmentRideHistoryBinding? = null
@@ -70,27 +70,27 @@ class RideHistoryFragment : Fragment() {
     private fun updateUIState(state: RideHistoryUiState) {
         when (state) {
             RideHistoryUiState.LOADING -> {
-                binding.progressBar.visible()
-                binding.recyclerViewRides.gone()
-                binding.emptyStateLayout.gone()
+                binding.progressBar.visibility = View.VISIBLE
+                binding.recyclerViewRides.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.GONE
             }
 
             RideHistoryUiState.LOADED -> {
-                binding.progressBar.gone()
-                binding.recyclerViewRides.visible()
-                binding.emptyStateLayout.gone()
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerViewRides.visibility = View.VISIBLE
+                binding.emptyStateLayout.visibility = View.GONE
             }
 
             RideHistoryUiState.EMPTY -> {
-                binding.progressBar.gone()
-                binding.recyclerViewRides.gone()
-                binding.emptyStateLayout.visible()
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerViewRides.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.VISIBLE
             }
 
             RideHistoryUiState.ERROR -> {
-                binding.progressBar.gone()
-                binding.recyclerViewRides.gone()
-                binding.emptyStateLayout.visible()
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerViewRides.visibility = View.GONE
+                binding.emptyStateLayout.visibility = View.VISIBLE
             }
         }
     }

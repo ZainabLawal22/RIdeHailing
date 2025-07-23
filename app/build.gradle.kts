@@ -5,6 +5,7 @@ plugins {
     //alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {

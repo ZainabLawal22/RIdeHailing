@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.navigation.safeargs) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin) apply false
 }

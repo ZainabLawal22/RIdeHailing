@@ -1,18 +1,19 @@
 package com.example.ridehailing.presentation.ui.home
 
-import androidx.fragment.app.Fragment
-import com.example.ridehailing.R
-import com.example.ridehailing.databinding.FragmentHomeBinding
-import com.example.ridehailing.domain.model.Location
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,13 +22,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.example.ridehailing.R
+import com.example.ridehailing.databinding.FragmentHomeBinding
+import com.example.ridehailing.domain.model.Location
 import java.util.Locale
-import android.util.Log
-
-import android.widget.Toast
-
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
 
@@ -44,6 +45,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private var destinationMarker: Marker? = null
     private var isSelectingPickup = true
 
+    private val TAG = HomeFragment::class.java.simpleName
+
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -54,11 +57,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             enableMyLocation()
         } else {
             Toast.makeText(requireContext(), "Location permission needed to show your current location", Toast.LENGTH_LONG).show()
-
-            val lagos = LatLng(6.5244, 3.3792)
-            if (::googleMap.isInitialized) {
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lagos, 12f))
-            }
         }
     }
 
@@ -110,7 +108,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             Toast.makeText(requireContext(), "Tap on map to select destination", Toast.LENGTH_SHORT).show()
         }
 
-        // Initially select pickup
+
         binding.btnSelectPickup.isSelected = true
     }
 
@@ -130,11 +128,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         viewModel.fareEstimate.observe(viewLifecycleOwner) { fareEstimate ->
             if (fareEstimate != null) {
                 binding.fareEstimateCard.visibility = View.VISIBLE
-                binding.tvBaseFare.text = "₦${String.format("%.0f", fareEstimate.baseFare)}"
-                binding.tvDistanceFare.text = "₦${String.format("%.0f", fareEstimate.distanceFare)}"
+                binding.tvBaseFare.text = "$${String.format("%.2f", fareEstimate.baseFare)}"
+                binding.tvDistanceFare.text = "$${String.format("%.2f", fareEstimate.distanceFare)}"
                 binding.tvDemandMultiplier.text = String.format("%.1fx", fareEstimate.demandMultiplier)
                 binding.tvTrafficMultiplier.text = String.format("%.1fx", fareEstimate.trafficMultiplier)
-                binding.tvTotalFare.text = "₦${String.format("%.0f", fareEstimate.totalFare)}"
+                binding.tvTotalFare.text = "$${String.format("%.2f", fareEstimate.totalFare)}"
                 binding.tvDistance.text = String.format("%.1f km", fareEstimate.distance)
                 binding.tvEstimatedDuration.text = "${fareEstimate.estimatedDuration} min"
             } else {
@@ -220,7 +218,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     .snippet(location.address.ifEmpty { "Selected Location" })
             )
             binding.tvPickupLocation.text = location.address.ifEmpty {
-                "Lat: ${String.format("%.4f", location.latitude)}, Lng: ${String.format("%.4f", location.longitude)}"
+                "${location.latitude}, ${location.longitude}"
             }
         }
     }
@@ -236,7 +234,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     .snippet(location.address.ifEmpty { "Selected Location" })
             )
             binding.tvDestinationLocation.text = location.address.ifEmpty {
-                "Lat: ${String.format("%.4f", location.latitude)}, Lng: ${String.format("%.4f", location.longitude)}"
+                "${location.latitude}, ${location.longitude}"
             }
         }
     }
@@ -244,37 +242,20 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        val lagos = LatLng(6.5244, 3.3792)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lagos, 12f))
 
-        // Style the map
-        styleMap()
+        val defaultLocation = LatLng(6.659417, 3.344079)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
 
+
+        setMapStyle(googleMap)
         setupMapClickListener()
-        requestLocationPermission()
-    }
+        enableMyLocation()
 
-    private fun styleMap() {
-        try {
-            // Enable various map features
-            googleMap.uiSettings.apply {
-                isZoomControlsEnabled = true
-                isCompassEnabled = true
-                isMyLocationButtonEnabled = true
-                isMapToolbarEnabled = true
-                isRotateGesturesEnabled = true
-                isScrollGesturesEnabled = true
-                isTiltGesturesEnabled = true
-                isZoomGesturesEnabled = true
-            }
 
-            // Set map type to normal (you can change to satellite, hybrid, etc.)
-            googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
-
-            Log.d("RideApp", "Map styled successfully")
-
-        } catch (e: Exception) {
-            Log.e("RideApp", "Error styling map", e)
+        googleMap.uiSettings.apply {
+            isZoomControlsEnabled = true
+            isCompassEnabled = true
+            isMyLocationButtonEnabled = true
         }
     }
 
@@ -301,80 +282,59 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         return try {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (addresses?.isNotEmpty() == true) {
-                val address = addresses[0]
-                // Build a readable address for Nigerian locations
-                buildString {
-                    address.thoroughfare?.let { append("$it, ") }
-                    address.locality?.let { append("$it, ") }
-                    address.adminArea?.let { append("$it, ") }
-                    address.countryName?.let { append(it) }
-                }.trim().removeSuffix(",")
+                addresses[0].getAddressLine(0) ?: ""
             } else {
-                "Unknown Location"
+                ""
             }
         } catch (e: Exception) {
-            Log.e("RideApp", "Error getting address", e)
-            "Location: ${String.format("%.4f", latitude)}, ${String.format("%.4f", longitude)}"
+            ""
         }
     }
 
-    private fun requestLocationPermission() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                enableMyLocation()
-            }
 
-            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                Toast.makeText(requireContext(), "Location permission needed to show your current location", Toast.LENGTH_LONG).show()
-                requestLocationPermissions()
-            }
-
-            else -> {
-                requestLocationPermissions()
-            }
-        }
+    private fun isPermissionGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestLocationPermissions() {
-        locationPermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
-    }
-
+    @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (isPermissionGranted()) {
             googleMap.isMyLocationEnabled = true
-            googleMap.uiSettings.isMyLocationButtonEnabled = true
-
-            // Get current location and move camera to user's location
+            // Move camera to user's current location
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     val currentLatLng = LatLng(it.latitude, it.longitude)
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                    Log.d("RideApp", "Current location: ${it.latitude}, ${it.longitude}")
-                    Toast.makeText(requireContext(), "Showing your current location", Toast.LENGTH_SHORT).show()
-                } ?: run {
-                    // If no location available, default to Lagos
-                    val lagos = LatLng(6.5244, 3.3792)
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lagos, 12f))
-                    Toast.makeText(requireContext(), "Using default location (Lagos). Enable GPS for accurate location.", Toast.LENGTH_LONG).show()
                 }
-            }.addOnFailureListener {
-                // Fallback to Lagos if location fails
-                val lagos = LatLng(6.5244, 3.3792)
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lagos, 12f))
-                Toast.makeText(requireContext(), "Could not get current location. Using Lagos as default.", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+
+    private fun setMapStyle(map: GoogleMap) {
+        try {
+            val success = map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireContext(),
+                    R.raw.map_style
+                )
+            )
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", e)
+
         }
     }
 
