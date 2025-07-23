@@ -3,90 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mapFragment">
+    app:startDestination="@id/homeFragment">
 
-<fragment
-    android:id="@+id/mapFragment"
-    android:name="com.ridehailing.presentation.ui.map.MapFragment"
-    android:label="Map"
-    tools:layout="@layout/fragment_map">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ridehailing.presentation.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
 
-    <action
-        android:id="@+id/action_map_to_ride_request"
-        app:destination="@id/rideRequestFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.ridehailing.presentation.ui.history.RideHistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_ride_history" />
 
-
-    <action
-        android:id="@+id/action_map_to_ride_history"
-        app:destination="@id/rideHistoryFragment"
-        app:enterAnim="@anim/slide_in_up"
-        app:exitAnim="@anim/slide_out_down"
-        app:popEnterAnim="@anim/slide_in_down"
-        app:popExitAnim="@anim/slide_out_up" />
-</fragment>
-
-<fragment
-    android:id="@+id/rideRequestFragment"
-    android:name="com.ridehailing.presentation.ui.ride.RideRequestFragment"
-    android:label="Request Ride"
-    tools:layout="@layout/fragment_ride_request">
-
-    <argument
-        android:name="pickupLocation"
-        app:argType="com.ridehailing.domain.model.Location"
-        app:nullable="false" />
-
-    <argument
-        android:name="destinationLocation"
-        app:argType="com.ridehailing.domain.model.Location"
-        app:nullable="false" />
-
-    <action
-        android:id="@+id/action_ride_request_to_map"
-        app:destination="@id/mapFragment"
-        app:popUpTo="@id/mapFragment"
-        app:popUpToInclusive="false" />
-
-    <action
-        android:id="@+id/action_ride_request_to_history"
-        app:destination="@id/rideHistoryFragment"
-        app:enterAnim="@anim/slide_in_up"
-        app:exitAnim="@anim/slide_out_down" />
-</fragment>
-
-
-<fragment
-    android:id="@+id/rideHistoryFragment"
-    android:name="com.ridehailing.presentation.ui.history.RideHistoryFragment"
-    android:label="Ride History"
-    tools:layout="@layout/fragment_ride_history">
-
-
-    <action
-        android:id="@+id/action_history_to_map"
-        app:destination="@id/mapFragment"
-        app:popUpTo="@id/mapFragment"
-        app:popUpToInclusive="false" />
-
-    <action
-        android:id="@+id/action_history_to_ride_request"
-        app:destination="@id/rideRequestFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left">
-
-        <argument
-            android:name="pickupLocation"
-            app:argType="com.ridehailing.domain.model.Location"
-            app:nullable="false" />
-
-        <argument
-            android:name="destinationLocation"
-            app:argType="com.ridehailing.domain.model.Location"
-            app:nullable="false" />
-    </action>
-</fragment>
 </navigation>
