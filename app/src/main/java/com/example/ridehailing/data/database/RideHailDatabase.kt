@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.ridehailing.data.database.converters.DatabaseTypeConverters
 import com.example.ridehailing.data.database.dao.RideDao
 import com.example.ridehailing.data.database.entities.EntityRide
 
@@ -17,7 +16,7 @@ import com.example.ridehailing.data.database.entities.EntityRide
     version = 1,
     exportSchema = false
 )
-@TypeConverters(DatabaseTypeConverters::class)
+
 abstract class RideHailDatabase : RoomDatabase() {
 
     abstract fun rideDao(): RideDao

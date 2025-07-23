@@ -18,7 +18,7 @@ interface RideRepository {
     suspend fun deleteRide(ride: Ride)
     fun getRidesByStatus(status: RideStatus): Flow<List<Ride>>
 
-    // API operations (mocked)
+    // API operations => mocked
     suspend fun getFareEstimate(pickup: Location, destination: Location): Result<FareCalculation>
     suspend fun requestRide(pickup: Location, destination: Location, fareEstimate: FareCalculation): Result<Ride>
 }

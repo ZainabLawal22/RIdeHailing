@@ -40,7 +40,7 @@ class RideHistoryAdapter : ListAdapter<Ride, RideHistoryAdapter.RideHistoryViewH
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(ride: Ride) {
             binding.apply {
-                // Locations
+
                 tvPickupLocation.text = ride.pickupLocation.address.ifEmpty {
                     "${ride.pickupLocation.latitude}, ${ride.pickupLocation.longitude}"
                 }
@@ -48,15 +48,15 @@ class RideHistoryAdapter : ListAdapter<Ride, RideHistoryAdapter.RideHistoryViewH
                     "${ride.destinationLocation.latitude}, ${ride.destinationLocation.longitude}"
                 }
 
-                // Fare and Trip Details
+
                 tvTotalFare.text = ride.fareEstimate.totalFare.formatAsCurrency()
                 tvDistance.text = ride.fareEstimate.distance.formatAsDistance()
                 tvDuration.text = "${ride.fareEstimate.estimatedDuration} min"
 
-                // Date
+
                 tvRideDate.text = ride.requestTime.formatForDisplay()
 
-                // Driver Information
+
                 if (ride.driver != null) {
                     tvDriverName.text = ride.driver.name
                     tvDriverCar.text = "${ride.driver.car} - ${ride.driver.plateNumber}"
@@ -71,11 +71,11 @@ class RideHistoryAdapter : ListAdapter<Ride, RideHistoryAdapter.RideHistoryViewH
                     tvDriverRating.text = ""
                 }
 
-                // Status
+
                 tvRideStatus.text = formatRideStatus(ride.status)
                 tvRideStatus.setTextColor(getStatusColor(ride.status))
 
-                // Status Icon Color
+
                 ivStatusIcon.setColorFilter(getStatusColor(ride.status))
             }
         }

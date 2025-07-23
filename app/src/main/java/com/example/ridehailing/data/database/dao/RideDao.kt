@@ -25,9 +25,6 @@ interface RideDao {
     @Query("SELECT * FROM rides WHERE status = :status ORDER BY requestTime DESC")
     fun getRidesByStatus(status: RideStatus): Flow<List<EntityRide>>
 
-    @Query("SELECT * FROM rides WHERE status IN (:statuses) ORDER BY requestTime DESC")
-    fun getRidesByStatuses(statuses: List<RideStatus>): Flow<List<EntityRide>>
-
     @Insert
     suspend fun insertRide(ride: EntityRide): Long
 
@@ -37,12 +34,4 @@ interface RideDao {
     @Delete
     suspend fun deleteRide(ride: EntityRide)
 
-    @Query("DELETE FROM rides WHERE id = :rideId")
-    suspend fun deleteRideById(rideId: Long)
-
-    @Query("SELECT COUNT(*) FROM rides")
-    suspend fun getRideCount(): Int
-
-    @Query("SELECT * FROM rides WHERE requestTime >= :startDate AND requestTime <= :endDate ORDER BY requestTime DESC")
-    suspend fun getRidesByDateRange(startDate: String, endDate: String): List<EntityRide>
 }

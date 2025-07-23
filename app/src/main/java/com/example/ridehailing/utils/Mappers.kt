@@ -7,7 +7,7 @@ import com.example.ridehailing.data.database.entities.EntityRide
 import com.example.ridehailing.domain.model.*
 
 // Entity to Domain Mappers
-fun EntityRide.toDomain(): com.example.ridehailing.domain.model.Ride {
+fun EntityRide.toDomain(): Ride {
     return Ride(
         id = id,
         pickupLocation = Location(pickupLatitude, pickupLongitude, pickupAddress),
@@ -37,7 +37,7 @@ fun EntityRide.toDomain(): com.example.ridehailing.domain.model.Ride {
 }
 
 // Domain to Entity Mappers
-fun com.example.ridehailing.domain.model.Ride.toEntity(): EntityRide {
+fun Ride.toEntity(): EntityRide {
     return EntityRide(
         id = id,
         pickupLatitude = pickupLocation.latitude,
@@ -87,5 +87,4 @@ fun DriverResponse.toDomain(): Driver {
 }
 
 // List mappers
-fun List<EntityRide>.toDomain(): List<com.example.ridehailing.domain.model.Ride> = map { it.toDomain() }
-fun List<com.example.ridehailing.domain.model.Ride>.toEntity(): List<EntityRide> = map { it.toEntity() }
+fun List<EntityRide>.toDomain(): List<Ride> = map { it.toDomain() }

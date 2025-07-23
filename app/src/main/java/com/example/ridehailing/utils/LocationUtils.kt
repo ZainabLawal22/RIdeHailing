@@ -5,7 +5,6 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
-import android.location.Location
 
 object LocationUtils {
 
@@ -26,34 +25,10 @@ object LocationUtils {
     }
 
     /**
-     * Calculate distance using Android Location class
-     * Returns distance in kilometers
-     */
-    fun calculateDistanceAndroid(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val results = FloatArray(1)
-        Location.distanceBetween(lat1, lon1, lat2, lon2, results)
-        return (results[0] / 1000.0) // Convert meters to kilometers
-    }
-
-    /**
      * Format coordinates for API calls
      */
     fun formatCoordinates(latitude: Double, longitude: Double): String {
         return "$latitude,$longitude"
     }
 
-    /**
-     * Parse coordinates from string format
-     */
-    fun parseCoordinates(coordinates: String): Pair<Double, Double> {
-        val parts = coordinates.split(",")
-        return Pair(parts[0].toDouble(), parts[1].toDouble())
-    }
-
-    /**
-     * Check if coordinates are valid
-     */
-    fun areValidCoordinates(latitude: Double, longitude: Double): Boolean {
-        return latitude in -90.0..90.0 && longitude in -180.0..180.0
-    }
 }
