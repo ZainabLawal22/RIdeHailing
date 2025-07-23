@@ -128,11 +128,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         viewModel.fareEstimate.observe(viewLifecycleOwner) { fareEstimate ->
             if (fareEstimate != null) {
                 binding.fareEstimateCard.visibility = View.VISIBLE
-                binding.tvBaseFare.text = "$${String.format("%.2f", fareEstimate.baseFare)}"
-                binding.tvDistanceFare.text = "$${String.format("%.2f", fareEstimate.distanceFare)}"
+                binding.tvBaseFare.text = "₦${String.format("%.2f", fareEstimate.baseFare)}"
+                binding.tvDistanceFare.text = "₦${String.format("%.2f", fareEstimate.distanceFare)}"
                 binding.tvDemandMultiplier.text = String.format("%.1fx", fareEstimate.demandMultiplier)
                 binding.tvTrafficMultiplier.text = String.format("%.1fx", fareEstimate.trafficMultiplier)
-                binding.tvTotalFare.text = "$${String.format("%.2f", fareEstimate.totalFare)}"
+                binding.tvTotalFare.text = "₦${String.format("%.2f", fareEstimate.totalFare)}"
                 binding.tvDistance.text = String.format("%.1f km", fareEstimate.distance)
                 binding.tvEstimatedDuration.text = "${fareEstimate.estimatedDuration} min"
             } else {
